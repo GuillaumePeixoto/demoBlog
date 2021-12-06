@@ -12,19 +12,16 @@
             <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm position-relative">
                 <div class="col p-4 d-flex flex-column position-static">
                 <strong class="d-inline-block mb-2 text-success">Design</strong>
-                <h3 class="mb-0">Post title</h3>
-                <div class="mb-1 text-muted">Nov 11</div>
-                <p class="mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-                <p class="card-text mb-auto">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate blanditiis sunt commodi quasi, sequi iste dolores ullam tempore corrupti aliquam odit eveniet fugiat optio laboriosam. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cum sint possimus illo rerum eum excepturi. Soluta quibusdam, tenetur, eligendi nesciunt quasi deserunt aspernatur suscipit cum autem velit, ab earum tempora?</p>
-                <p class="card-text mb-auto">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate blanditiis sunt commodi quasi, sequi iste dolores ullam tempore corrupti aliquam odit eveniet fugiat optio laboriosam. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cum sint possimus illo rerum eum excepturi. Soluta quibusdam, tenetur, eligendi nesciunt quasi deserunt aspernatur suscipit cum autem velit, ab earum tempora?</p>
-                <p class="card-text mb-auto">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cum sint possimus illo rerum eum excepturi. Soluta quibusdam, tenetur, eligendi nesciunt quasi deserunt aspernatur suscipit cum autem velit, ab earum tempora?</p>
+                <h3 class="mb-0">{{ article.titre }}</h3>
+                <div class="mb-1 text-muted">{{ article.date|date("d-m-Y H:i")}}</div>
+                <p class="card-text mb-auto">{{ article.contenu|striptags }}</p>
                 <div class="mt-3">
-                    <a href="#" class="btn btn-dark">Modifier</a>
+                    <a href="{{ path('blog_edit', {'id': article.id}) }}" class="btn btn-dark">Modifier</a>
                     <a href="#" class="btn btn-primary">Imprimer</a>
                 </div>
                 </div>
                 <div class="col-auto d-none d-lg-block">
-                    <img src="https://picsum.photos/400/600" alt="">
+                    <img src="{{ article.photo }}" alt="">
                 </div>
             </div>
         </div>

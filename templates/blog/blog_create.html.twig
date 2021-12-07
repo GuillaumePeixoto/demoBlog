@@ -5,7 +5,12 @@
 {% endblock %}
 
 {% block body %}
-    <h1 class="  ">Nouvel Article</h1>
+    {% if editMode %}
+        <h1 class="text-center my-5">Modification de l'article</h1>
+    {% else %}
+        <h1 class="text-center my-5">Nouvel Article</h1>
+    {% endif %}
+    
     {# <form method="post">
         <div class="mb-3">
             <label for="titre" class="form-label">Titre</label>
@@ -29,6 +34,13 @@
         {{ form_row(formArticle.titre) }}
         {{ form_row(formArticle.contenu)}}
         {{ form_row(formArticle.photo) }}
+
+        {% if photoActuelle %}
+            <em>Vous pouvez insérer une nouvelle photo si vous le souhaitez</em>
+            <div class="col-2">
+                <img src="{{ asset('uploads/photos/' ~ photoActuelle) }}" alt="" class="col-12 img-responsive">
+            </div>
+        {% endif %}
         <button type="submit" class="btn btn-dark">Enregistrer</button>
     {{ form_end(formArticle) }}
 {% endblock %}

@@ -17,6 +17,12 @@
      - Plus rapide à l'execution
  #}
 
+{% for message in app.flashes('success') %}
+    <div class="col-6 mx-auto text-center alert alert-success">
+        {{ message }}
+    </div>
+{% endfor %}
+
 <h1 class="text-center my-5">{{ title }}</h1>
 
 {% if age > 18 %}

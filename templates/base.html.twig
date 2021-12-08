@@ -53,7 +53,14 @@
             <header class="blog-header py-3">
                 <div class="row flex-nowrap justify-content-between align-items-center">
                 <div class="col-4 pt-1">
-                    <a class="link-secondary" href="#">Crée votre compte</a>
+                {# Si app.user retourne TRUE, cela veux dire que l'internaute est authentifié, on entre dans le IF #}
+                    {% if app.user %}
+                        <a href="#" class="link-secondary" title="Accès à votre compte"><span> Bonjour <strong>{{ app.user.prenom}} {{ app.user.nom}}</strong></span></a>
+                    {% else %}
+                        <a class="link-secondary" href="{{ path('app_register') }}">Crée votre compte</a>
+                    {% endif %}
+
+                    
                 </div>
                 <div class="col-4 text-center">
                     <a class="blog-header-logo text-dark" href="#">Symfony</a>
@@ -62,14 +69,23 @@
                     <a class="link-secondary" href="#" aria-label="Search">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="mx-3" role="img" viewBox="0 0 24 24"><title>Search</title><circle cx="10.5" cy="10.5" r="7.5"/><path d="M21 21l-5.2-5.2"/></svg>
                     </a>
-                    <a class="btn btn-sm btn-outline-secondary" href="#">Identifiez-vous</a>
+                    {% if app.user %}
+                        <a href="{{ path('app_logout') }}" class="btn btn-sm btn-outline-secondary">Deconnexion</a>
+                    {% else %}
+                        <a class="btn btn-sm btn-outline-secondary" href="{{ path('app_login') }}">Identifiez-vous</a>
+                    {% endif %}
+
+
                 </div>
                 </div>
             </header>
 
             <div class="nav-scroller py-1 mb-2">
                 <nav class="nav d-flex justify-content-between">
-                <a class="p-2 link-secondary" href="{{path('blog_create')}}">Nouvel article</a>
+                {% if app.user %}
+                    <a class="p-2 link-secondary" href="{{path('blog_create')}}">Nouvel article</a>
+                {% endif %}
+
                 <a class="p-2 link-secondary" href="#">U.S.</a>
                 <a class="p-2 link-secondary" href="#">Technology</a>
                 <a class="p-2 link-secondary" href="#">Design</a>
@@ -94,7 +110,7 @@
                     <p class="lead mb-0"><a href="{{ path('blog') }}" class="text-white fw-bold">Détails</a></p>
                 </div>
             </div>
-
+            {# app.user est un objet twig contenant toutes les informations de l'internaute authentifié sur le site dans la session de l'utilisateur #}
             {% block body %}
                 
             {% endblock %}

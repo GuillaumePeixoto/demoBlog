@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\Commentaire;
 use App\Form\ArticleType;
+use App\Form\CommentaireType;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityManager;
@@ -176,7 +178,7 @@ class BlogController extends AbstractController
     // Méthode permettant d'afficher le détail d'un article
     // On définit une route 'paramètrée' {id}, ici la route permet de recevoir l'id d'un article stocké en BDD
     #[Route('/blog/{id}', name: 'blog_show')]
-    public function blogShow(Article $article) : Response
+    public function blogShow(Request $request, Article $article, EntityManagerInterface $manager) : Response
     {
         /*
             Ici, nous envoyons un ID dans l'url et nous imposons en argument un objet issu de l'entité Article onc la table SQL
@@ -188,8 +190,37 @@ class BlogController extends AbstractController
 
         // L'id transmit dans la route est transmit automatiquement en argument de la méhode blogShow($id) dans la variable de réception $id
         // dd($id);
+
+        // cette méthode mise a disposition retourne un objet App\Entity\Article contenant toute les données de l'utilisateur authentifié
+        $user = $this->getUser();
+        dd($user);
+
+        $commentaire = new Commentaire;
+
+        $formComment = $this->createForm(CommentaireType::class, $commentaire);
+
+
+        $formComment->handleRequest($request);
+
+        if($formComment->isSubmitted() && $formComment->isValid())
+        {
+
+            $commentaire->setDate(new \DateTime());
+            $commentaire->setArticle($article);
+
+            $this->addFlash('success', "Le commentaire a été ajouter avec succès !");
+
+            $manager->persist($commentaire);
+
+            $manager->flush();
+
+            return $this->redirectToRoute('blog_show',['id' => $article->getId()]);
+        }
+
+
         return $this->render('blog/blog_show.html.twig',[
-            'article' => $article
+            'article' => $article,
+            'formComment' => $formComment->createView()
         ]);
     }
 }

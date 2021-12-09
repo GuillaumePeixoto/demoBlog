@@ -16,8 +16,16 @@ class RegistrationController extends AbstractController
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
+        if($this->getUser())
+        {
+            return $this->redirectToRoute('blog');
+        }
+
+
         $user = new User();
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form = $this->createForm(RegistrationFormType::class, $user, [
+            'userRegistration' => true // ici on précise dans quelle condition on entre dans la classe RegistrationFormType pour afficher un formulaire en particulier, la classe contient plusieurs formulaire
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -53,8 +61,38 @@ class RegistrationController extends AbstractController
         4. Afficher dans ce template les informations de l'utilisateurs connecté
     */
     #[Route('/profil', name: 'profil')]
-    public function userProfil()
+    public function userProfil() : Response
     {
+        if(!$this->getUser())
+        {
+            return $this->redirectToRoute('app_login');
+        }
         return $this->render('registration/profil.html.twig');
+    }
+
+    #[Route('/profil/{id}/edit', name: 'profil_edit')]
+    public function editProfil(User $user, Request $request, EntityManagerInterface $manager) : Response
+    {
+        // dd($user);
+        $form = $this->createForm(RegistrationFormType::class, $user, [
+            'userUpdate' => true // ici on précise dans quelle condition on entre dans la classe RegistrationFormType pour afficher un formulaire en particulier, la classe contient plusieurs formulaire
+        ]);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+            
+            $manager->persist($user);
+            $manager->flush();
+
+            $this->addFlash('success',"Vous avez modifié vos informations, merci de vous authentifié à nouveau");
+            // une fois que l'utilisateur a modifié ses info de profil, on le redirige vers la page de deconnexion, on le deconnecter pour qu'il puisse après mettre a jour la session en s'authentifiant de nouveau
+            return $this->redirectToRoute("app_logout");
+        }
+
+        return $this->render('registration/profil_edit.html.twig',[
+            'updateForm' => $form->createView(),
+        ]);
     }
 }

@@ -55,7 +55,7 @@
                 <div class="col-4 pt-1">
                 {# Si app.user retourne TRUE, cela veux dire que l'internaute est authentifié, on entre dans le IF #}
                     {% if app.user %}
-                        <a href="#" class="link-secondary" title="Accès à votre compte"><span> Bonjour <strong>{{ app.user.prenom}} {{ app.user.nom}}</strong></span></a>
+                        <a href="{{ path('profil') }}" class="link-secondary" title="Accès à votre compte"><span> Bonjour <strong>{{ app.user.prenom}} {{ app.user.nom}}</strong></span></a>
                     {% else %}
                         <a class="link-secondary" href="{{ path('app_register') }}">Crée votre compte</a>
                     {% endif %}
@@ -69,6 +69,12 @@
                     <a class="link-secondary" href="#" aria-label="Search">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="mx-3" role="img" viewBox="0 0 24 24"><title>Search</title><circle cx="10.5" cy="10.5" r="7.5"/><path d="M21 21l-5.2-5.2"/></svg>
                     </a>
+                    {# is_granted() : fonction Twig qui vérifie si l'utilisateur ici a un ROLE_ADMIN enregistré dans la session donc en BDD #}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('app_admin') }}" class="btn btn-sm btn-outline-secondary me-2">BackOffice</a>
+                    {% endif %}
+
+
                     {% if app.user %}
                         <a href="{{ path('app_logout') }}" class="btn btn-sm btn-outline-secondary">Deconnexion</a>
                     {% else %}

@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Blog Symfony | Mon compte
+{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Mon compte</h1>
+    <div class="container">
+        <div class="card col-12 col-md-8 col-lg-6 mx-auto my-3">
+            <div class="d-flex my-3">
+                <img src="https://picsum.photos/seed/picsum/300/300" alt="" class="rounded-circle mx-auto">
+            </div>
+            <table class="table mb-0">
+                <tbody>
+                    <tr class="text-center">
+                        <th scope="row">Nom</th>
+                        <td>{{ app.user.nom }}</td>
+                    </tr>
+                    <tr class="text-center">
+                        <th scope="row">Prénom</th>
+                        <td>{{ app.user.prenom }}</td>
+                    </tr>
+                    <tr class="text-center">
+                        <th scope="row">Adresse Mail</th>
+                        <td>{{ app.user.email }}</td>
+                    </tr>
+                    <tr class="text-center">
+                        <th scope="row">Adresse</th>
+                        <td>{{ app.user.adresse }}</td>
+                    </tr>
+                    <tr class="text-center">
+                        <th scope="row">Ville</th>
+                        <td>{{ app.user.ville }}</td>
+                    </tr>
+                    <tr class="text-center">
+                        <th scope="row">Code Postal</th>
+                        <td>{{ app.user.codePostal }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <a href="{{ path('profil_edit', {'id': app.user.id}) }}" class="btn btn-primary">Modifier</a>
+        </div>
+
+    </div>
+{% endblock %}

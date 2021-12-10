@@ -1,0 +1,40 @@
+{% extends "base_admin.html.twig" %}
+
+{% block title %}
+    Blog Symfony | Users
+{% endblock %}
+
+{% block body %}
+        {% for message in app.flashes('success') %}
+        <div class="col-6 mx-auto text-center alert alert-success my-5">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <table class="table table-striped vertical-border" id="table-backoffice-user">
+        <thead>
+            <tr>     
+                {% for data in colonnes %}
+                    {% if data != 'id' and data != 'password' %}
+                        <th class="text-center">{{data|capitalize}}</th>            
+                    {% endif %}
+                {% endfor %}
+                <th class="text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td class="align-middle text-center">{{ user.email }}</td>
+                    <td class="align-middle text-center">{{ user.roles.0 }}</td>
+                    <td class="align-middle text-center">{{ user.prenom }}</td>
+                    <td class="align-middle text-center">{{ user.nom }}</td>
+                    <td class="align-middle text-center">{{ user.adresse }}</td>
+                    <td class="align-middle text-center">{{ user.ville }}</td>
+                    <td class="align-middle text-center">{{ user.codePostal }}</td>
+                    <td class="align-middle text-center"><a href="{{ path('app_admin_user_remove', {'id': user.id })}}" class="rounded bg-danger p-2 text-white d-flex justify-content-center align-items-center"><i class="bi bi-trash"></i></a><a href="#" class="bg-primary p-2 mt-2 rounded text-white d-flex justify-content-center align-items-center"><i class="bi bi-pencil-square"></i></a></td>
+                </tr> 
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

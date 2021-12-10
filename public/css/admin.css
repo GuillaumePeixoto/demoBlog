@@ -90,6 +90,9 @@ body {
 
 .vertical-border tr td,
 .vertical-border tr th {
-  border-left: 1px solid rgb(211, 211, 211);
-  border-right: 1px solid rgb(211, 211, 211);
+  border: 1px solid rgb(211, 211, 211);
+}
+
+.conteneur-principal-admin{
+  overflow-x: hidden !important;
 }

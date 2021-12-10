@@ -1,0 +1,38 @@
+{% extends "base_admin.html.twig" %}
+
+{% block title %}
+    Blog Symfony | Commentaire
+{% endblock %}
+
+{% block body %}
+        {% for message in app.flashes('success') %}
+        <div class="col-6 mx-auto text-center alert alert-success my-5">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <table class="table table-striped vertical-border" id="table-backoffice-comment">
+        <thead>
+            <tr>
+                <th class="text-center" style="min-width: 150px">Titre de l'article</th>        
+                    {% for data in colonnes %}
+                        {% if data != 'id' %}
+                            <th class="text-center">{{data|capitalize}}</th>            
+                        {% endif %}
+                    {% endfor %}
+                <th class="text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for comment in comments %}
+                <tr>
+                    <td class="align-middle text-center">{{ comment.article.titre}}</td>
+                    <td class="align-middle text-center">{{ comment.commentaire}}</td>
+                    <td class="align-middle text-center">{{ comment.auteur}}</td>
+                    <td class="align-middle text-center" style="min-width: 100px">{{ comment.date|date('d-m-Y H:i')}}</td>
+                    <td class="align-middle text-center"><a href="{{ path('app_admin_comment_remove', {'id': comment.id })}}" class="rounded bg-danger p-2 text-white d-flex justify-content-center align-items-center"><i class="bi bi-trash"></i></a>
+                </tr> 
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

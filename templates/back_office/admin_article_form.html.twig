@@ -1,0 +1,27 @@
+{% extends "base_admin.html.twig" %}
+
+{% block title %}
+    Blog Symfony | {{ action }}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="text-center my-3">{{ action }} d'article</h1>
+        {{ form_start(articleForm) }}
+            {{ form_row(articleForm.titre) }}
+            {{ form_row(articleForm.category) }}
+            {{ form_row(articleForm.contenu)}}
+            {{ form_row(articleForm.photo) }}
+            {% if havePhoto != null %}
+            <div>
+                <em>Vous pouvez insérer une nouvelle photo si vous le souhaitez</em>
+                <div class="col-2 my-2">
+                    <img src="{{  asset('uploads/photos/' ~ havePhoto) }}" alt="{{havePhoto}}" class="col-12 img-responsive">
+                </div>
+            </div>
+            
+            {% endif %}
+            <button class="btn btn-primary">{{action}}</button>
+        {{ form_end(articleForm)}}
+    </div>
+{% endblock %}

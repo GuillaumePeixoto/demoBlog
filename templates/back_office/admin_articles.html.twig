@@ -5,28 +5,39 @@
 {% endblock %}
 
 {% block body %}
-    <table class="table table-striped vertical-border">
-        <tr>
-            {% for data in colonnes %}
-                {% if data != 'id' %}
-                    <th class="text-center">{{data|capitalize}}</th>            
-                {% endif %}
+
+    {% for message in app.flashes('success') %}
+        <div class="col-6 mx-auto text-center alert alert-success my-5">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <table class="table table-striped vertical-border" id="table-backoffice-article">
+        <thead>
+            <tr>
+                {% for data in colonnes %}
+                    {% if data != 'id' %}
+                        <th class="text-center">{{data|capitalize}}</th>            
+                    {% endif %}
+                {% endfor %}
+                <th class="text-center">Cat.</th>
+                <th class="text-center">Nb Com.</th>
+                <th class="text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for article in articles %}
+                <tr>
+                    <td class="align-middle text-center"><a href="{{ path('blog_show', {'id': article.id}) }}">{{ article.titre}}</a></td>
+                    <td class="w-25">{{ article.contenu}}</td>
+                    <td class="text-center"><img src="{{  asset('uploads/photos/' ~ article.photo) }}" alt="{{ article.photo}}" style="width: 300px"></td>
+                    <td class="align-middle text-center">{{ article.date|date('d/m/Y H:i')}}</td>
+                    <td class="align-middle text-center">{{ article.category.titre}}</td>
+                    <td class="align-middle text-center">{{article.commentaires|length}}</td>
+                    <td class="align-middle text-center"><a href="{{ path('app_admin_article_modify', {'id': article.id })}}" class="rounded bg-primary p-2 text-white d-flex justify-content-center align-items-center"><i class="bi bi-pencil-square"></i></a><a href="{{ path('app_admin_article_remove', {'id': article.id}) }}" class="bg-danger p-2 mt-2 rounded text-white d-flex justify-content-center align-items-center"><i class="bi bi-trash-fill"></i></a></td>
+                </tr> 
             {% endfor %}
-            <th class="text-center">Cat.</th>
-            <th class="text-center">Nb Com.</th>
-            <th class="text-center">Action</th>
-        </tr>
-        {% for article in articles %}
-           <tr>
-                <td class="align-middle text-center">{{ article.titre}}</td>
-                <td class="w-25">{{ article.contenu}}</td>
-                <td class="text-center"><img src="{{  asset('uploads/photos/' ~ article.photo) }}" alt="{{ article.photo}}" style="width: 300px"></td>
-                <td class="align-middle text-center">{{ article.date|date('d/m/Y H:i')}}</td>
-                <td class="align-middle text-center">{{ article.category.titre}}</td>
-                <td class="align-middle text-center">{{article.commentaires|length}}</td>
-                <td class="align-middle text-center"><a href="#" class="rounded bg-primary p-2 text-white d-flex justify-content-center align-items-center"><i class="bi bi-pencil-square"></i></a><a href="#" class="bg-danger p-2 mt-2 rounded text-white d-flex justify-content-center align-items-center"><i class="bi bi-trash-fill"></i></a></td>
-           </tr> 
-        {% endfor %}
+        </tbody>
     </table>
 
 {% endblock %}

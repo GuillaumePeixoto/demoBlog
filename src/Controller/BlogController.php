@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\Category;
 use App\Entity\Commentaire;
 use App\Form\ArticleType;
 use App\Form\CommentaireType;
 use App\Repository\ArticleRepository;
+use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
@@ -29,8 +31,19 @@ class BlogController extends AbstractController
         ]);
     }
 
+    // Cette méthode permet de selectionner toutes les catégories de la BDD mais ne possède pas de route, les categories seront intégrées dans base.html.twig
+    public function allCategory(CategoryRepository $repoCategory)
+    {
+        $categorys = $repoCategory->findAll();
+
+        return $this->render('blog/category_list.html.twig',[
+            'categorys' => $categorys
+        ]);
+    }
+
     #[Route('/blog', name: 'blog')]
-    public function blog(ArticleRepository $repoArticle): Response
+    #[Route('/blog/categories/{id}', name: 'blog_category')]
+    public function blog(ArticleRepository $repoArticle, Category $category = null): Response
     {
         /*
             Injection de dépendances : c'est un des fondement de Symfony, ici notre méthode dépend de la classe ArticleRepository pour fonctionner correctement
@@ -55,8 +68,16 @@ class BlogController extends AbstractController
         // dump() / dd() : outil de débug de symfony
         //dd($repoArticle);
 
-        // findAll() : méthode issue de la classe ArticleRepository permettant de selectionner l'ensemble de la table SQL et de récuperer un talbeau multi contenant l'ensemble des articles
-        $articles = $repoArticle->findAll(); // SELECT * FROM article + FETCH_ALL
+        if($category)
+        {
+            $articles = $category->getArticles();
+        }
+        else
+        {
+            // findAll() : méthode issue de la classe ArticleRepository permettant de selectionner l'ensemble de la table SQL et de récuperer un talbeau multi contenant l'ensemble des articles
+            $articles = $repoArticle->findAll(); // SELECT * FROM article + FETCH_ALL            
+        }
+
         // dump($articles);
 
         // dd($articles);
@@ -193,11 +214,9 @@ class BlogController extends AbstractController
 
         // cette méthode mise a disposition retourne un objet App\Entity\Article contenant toute les données de l'utilisateur authentifié
         $user = $this->getUser();
-
         $commentaire = new Commentaire;
 
         $formComment = $this->createForm(CommentaireType::class, $commentaire);
-
 
         $formComment->handleRequest($request);
 
@@ -206,7 +225,7 @@ class BlogController extends AbstractController
 
             $commentaire->setDate(new \DateTime());
             $commentaire->setArticle($article);
-
+            $commentaire->setAuteur($user->getNom().' '.$user->getPrenom());
             $this->addFlash('success', "Le commentaire a été ajouter avec succès !");
 
             $manager->persist($commentaire);

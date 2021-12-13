@@ -51,43 +51,45 @@
                 </a>
                 <hr>
                 <ul class="nav nav-pills flex-column mb-auto">
+                {# {{ dump(app.request.attribute.get('_route')) }} #}
+                {% set route_name = app.request.attributes.get('_route') %}
                 <li class="nav-item">
                     <a href="#" class="nav-link text-white d-flex align-items-center" aria-current="page">
                         <i class="bi bi-house-fill"></i>
                         <span class="ms-2">Home</span>
                     </a>
                 </li>
-                <li>
+                <li class="{% if route_name == 'app_admin_category_add' %} active {% endif %} ">
                     <a href="{{ path('app_admin_category_add') }}" class="nav-link text-white d-flex align-items-center">
                     <i class="bi bi-plus-circle"></i>
                     <span class="ms-2">Nouvelle Categorie</span>
                     </a>
                 </li>
-                <li>
+                <li class="{% if route_name == 'app_admin_categorys' %} active {% endif %} ">
                     <a href="{{ path('app_admin_categorys') }}" class="nav-link text-white d-flex align-items-center">
                     <i class="bi bi-bookmark-fill"></i>
                     <span class="ms-2">Categorie</span>
                     </a>
                 </li>
-                <li>
+                <li class="{% if route_name == 'app_admin_article_add' %} active {% endif %} ">
                     <a href="{{ path('app_admin_article_add') }}" class="nav-link text-white d-flex align-items-center">
                     <i class="bi bi-plus-circle"></i>
                     <span class="ms-2">Nouvel Article</span>
                     </a>
                 </li>
-                <li>
+                <li class="{% if route_name == 'app_admin_articles' %} active {% endif %} ">
                     <a href="{{ path('app_admin_articles') }}" class="nav-link text-white d-flex align-items-center">
                     <i class="bi bi-newspaper"></i>
                     <span class="ms-2">Article</span>
                     </a>
                 </li>
-                <li>
+                <li class="{% if route_name == 'app_admin_comments' %} active {% endif %} ">
                     <a href="{{ path('app_admin_comments') }}" class="nav-link text-white d-flex align-items-center">
                     <i class="bi bi-chat-left-quote-fill"></i>
                     <span class="ms-2">Commentaires</span>
                     </a>
                 </li>
-                <li>
+                <li class="{% if route_name == 'app_admin_users' %} active {% endif %} ">
                     <a href="{{ path('app_admin_users') }}" class="nav-link text-white d-flex align-items-center">
                     <i class="bi bi-person-circle"></i>
                     <span class="ms-2">Customers</span>

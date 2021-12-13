@@ -28,7 +28,7 @@ $(document).ready(function() {
             url: '/js/dataTables.french.json'
         },
         "aoColumnDefs": [
-            { 'bSortable': false, 'aTargets': [] }
+            { 'bSortable': false, 'aTargets': [ 7 ] }
         ]
     });
 });

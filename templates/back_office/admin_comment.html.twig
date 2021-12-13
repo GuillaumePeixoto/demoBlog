@@ -30,7 +30,7 @@
                     <td class="align-middle text-center">{{ comment.commentaire}}</td>
                     <td class="align-middle text-center">{{ comment.auteur}}</td>
                     <td class="align-middle text-center" style="min-width: 100px">{{ comment.date|date('d-m-Y H:i')}}</td>
-                    <td class="align-middle text-center"><a href="{{ path('app_admin_comment_remove', {'id': comment.id })}}" class="rounded bg-danger p-2 text-white d-flex justify-content-center align-items-center"><i class="bi bi-trash"></i></a>
+                    <td class="align-middle text-center"><a href="{{ path('app_admin_modify_comment', {'id': comment.id })}}" class="rounded bg-primary p-2 mb-1 text-white d-flex justify-content-center align-items-center"><i class="bi bi-pencil-square"></i></a><a href="{{ path('app_admin_comment_remove', {'id': comment.id })}}" class="rounded bg-danger p-2 text-white d-flex justify-content-center align-items-center"><i class="bi bi-trash"></i></a></td>
                 </tr> 
             {% endfor %}
         </tbody>

@@ -96,3 +96,8 @@ body {
 .conteneur-principal-admin{
   overflow-x: hidden !important;
 }
+
+li.active{
+  background-color: rgb(102, 88, 236);
+  border-radius: 10px;
+}

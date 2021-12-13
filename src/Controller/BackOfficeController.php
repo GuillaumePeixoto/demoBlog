@@ -8,6 +8,7 @@ use App\Entity\Commentaire;
 use App\Entity\User;
 use App\Form\ArticleType;
 use App\Form\CategoryType;
+use App\Form\CommentaireType;
 use App\Repository\ArticleRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\CommentaireRepository;
@@ -49,35 +50,13 @@ class BackOfficeController extends AbstractController
             return $this->redirectToRoute('app_admin_articles');
         }
 
-
         //dd($articles);
-
-        /*
-            Exo : 
-            Afficher l'ensemble des articles
-            Dans le template 'admin_articles' mettre en forme l'affichage
-            Afficher le nom de la catégorie de chaque article
-            Afficher le nombre de commentaire
-            Prévoir un lien de modif
-
-        */
 
         return $this->render('back_office/admin_articles.html.twig',[
             'colonnes' => $colonnes,
             'articles' => $articles
         ]);
     }
-
-    /*
-        Exo : Création d'une nouvelle méthode permettant d'insérer et de modifier 1 articles en BDD
-        1. Créer une route '/admin/article/add' {name: app_admin_article_add}
-        2. Créer la méthode adminArticleForm()
-        3. Créer un nouveau template 'admin_article_form.html.twig
-        4. Importer et créer le formulaire au sein de la méthode adminArticleForm() (createForm)
-        5. Afficher le formulaire
-        6. Gérer les uploads
-        7. Dans la méthode adminArticleForm(), réaliserr le traitement permettant d'insérer un nouvel article en BDD
-    */
 
     #[Route('/admin/article/add', name: 'app_admin_article_add')]
     #[Route('/admin/article/{id}/modify', name: 'app_admin_article_modify')]
@@ -172,17 +151,17 @@ class BackOfficeController extends AbstractController
 
         if($category)
         {
-            $id = $category->getId();
+            $titre = $category->getTitre();
 
             if(count($category->getArticles()) == 0)
             {
                 $manager->remove($category);
                 $manager->flush();
-                $this->addFlash('success', "La categorie n°$id a été supprimer avec succès !");
+                $this->addFlash('success', "La categorie $titre a été supprimer avec succès !");
             }
             else
             {
-                $this->addFlash('error', "Vous ne pouvez pas supprimer cette catégorie tant qu'il reste des articles lié à celle-ci");
+                $this->addFlash('danger', "Vous ne pouvez pas supprimer cette catégorie tant qu'il reste des articles lié à celle-ci");
             }
 
 
@@ -256,6 +235,31 @@ class BackOfficeController extends AbstractController
             'comments' => $comments
         ]);
     }
+
+    #[Route('/admin/commentaire/{id}/modify', name: 'app_admin_modify_comment')]
+    public function adminCommentForm(Commentaire $commentaire, EntityManagerInterface $manager, Request $request): Response
+    {
+
+        $commentaireForm = $this->createForm(CommentaireType::class, $commentaire);
+
+        $commentaireForm->handleRequest($request);
+
+        if($commentaireForm->isSubmitted() && $commentaireForm->isValid())
+        {
+            $manager->persist($commentaire);
+
+            $manager->flush();
+
+            $this->addFlash('success', "Modification du commentaire !");
+
+            return $this->redirectToRoute('app_admin_comments');
+        }
+
+        return $this->render('back_office/admin_comment_form.html.twig',[
+            'commentaireForm' => $commentaireForm->createView()
+        ]);
+    }
+
     
     #[Route('/admin/users', name: 'app_admin_users')]
     #[Route('/admin/user/{id}/remove', name: 'app_admin_user_remove')]

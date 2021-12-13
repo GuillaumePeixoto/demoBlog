@@ -1,0 +1,5 @@
+{# On boucle les category #}
+
+{% for data in categorys %}
+    <a class="p-2 link-secondary" href="{{ path('blog_category', {'id': data.id}) }}">{{ data.titre }}</a>
+{% endfor %}

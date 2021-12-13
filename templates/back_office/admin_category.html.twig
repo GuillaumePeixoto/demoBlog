@@ -6,15 +6,13 @@
 
 {% block body %}
 
-    {% for message in app.flashes('success') %}
-        <div class="col-6 mx-auto text-center alert alert-success my-5">
-            {{ message }}
-        </div>
-    {% endfor %}
-    {% for message in app.flashes('error') %}
-        <div class="col-6 mx-auto text-center alert alert-danger my-5">
-            {{ message }}
-        </div>
+    {# On utilise l'identifiant du message comme class bootstrap #}
+    {% for label, messages in app.flashes(['success', 'danger']) %}
+        {% for message in messages %}
+            <div class="col-6 mx-auto text-center alert alert-{{ label }} my-5">
+                {{ message }}
+            </div>
+        {% endfor %}
     {% endfor %}
 
     <table class="table table-striped vertical-border" id="table-backoffice-category">

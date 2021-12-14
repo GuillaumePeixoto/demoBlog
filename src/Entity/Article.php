@@ -50,6 +50,12 @@ class Article
      */
     private $commentaires;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="article")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
@@ -120,32 +126,14 @@ class Article
         return $this;
     }
 
-    /**
-     * @return Collection|Commentaire[]
-     */
-    public function getCommentaires(): Collection
+    public function getUser(): ?User
     {
-        return $this->commentaires;
+        return $this->user;
     }
 
-    public function addCommentaire(Commentaire $commentaire): self
+    public function setUser(?User $user): self
     {
-        if (!$this->commentaires->contains($commentaire)) {
-            $this->commentaires[] = $commentaire;
-            $commentaire->setArticle($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCommentaire(Commentaire $commentaire): self
-    {
-        if ($this->commentaires->removeElement($commentaire)) {
-            // set the owning side to null (unless already changed)
-            if ($commentaire->getArticle() === $this) {
-                $commentaire->setArticle(null);
-            }
-        }
+        $this->user = $user;
 
         return $this;
     }

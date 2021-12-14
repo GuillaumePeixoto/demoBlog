@@ -21,7 +21,7 @@
           <div class="col-{{ col }} p-4 d-flex flex-column position-static">
             <strong class="d-inline-block mb-2 text-primary">{{ data.category.titre }}</strong>
             <h3 class="mb-0"> {{data.titre}} </h3>
-            <div class="mb-1 text-muted">Publié le {{ data.date|date("d-m-Y H:i") }}</div>
+            <div class="mb-1 text-muted">Publié le {{ data.date|date("d-m-Y H:i") }} par {{ data.user.nom }}&nbsp;{{data.user.prenom}} </div>
             <p class="card-text mb-auto">{{ data.contenu|slice(0,100)|striptags }}[...]</p>
             {# On founir à la route l'id de l'article à transmettre dans l'url. La route 'blog_show' est une route paramètrée, on doit lui fournir un paramètres, ici l'id #}
             <a href="{{ path('blog_show', {'id': data.id}) }}" class="stretched-link">Lire la suite</a>

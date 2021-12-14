@@ -32,7 +32,7 @@
                     <td class="align-middle text-center">{{ user.adresse }}</td>
                     <td class="align-middle text-center">{{ user.ville }}</td>
                     <td class="align-middle text-center">{{ user.codePostal }}</td>
-                    <td class="align-middle text-center"><a href="{{ path('app_admin_user_remove', {'id': user.id })}}" class="rounded bg-danger p-2 text-white d-flex justify-content-center align-items-center"><i class="bi bi-trash"></i></a><a href="#" class="bg-primary p-2 mt-2 rounded text-white d-flex justify-content-center align-items-center"><i class="bi bi-pencil-square"></i></a></td>
+                    <td class="align-middle text-center"><a href="{{ path('app_admin_user_remove', {'id': user.id })}}" class="rounded bg-danger p-2 text-white d-flex justify-content-center align-items-center"><i class="bi bi-trash"></i></a><a href="{{ path('app_admin_mofify_user', {'id': user.id}) }}" class="bg-primary p-2 mt-2 rounded text-white d-flex justify-content-center align-items-center"><i class="bi bi-pencil-square"></i></a></td>
                 </tr> 
             {% endfor %}
         </tbody>

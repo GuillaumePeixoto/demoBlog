@@ -145,6 +145,8 @@ class BlogController extends AbstractController
                 $txt = "modifié";
             }
             
+
+
             $photo = $formArticle->get('photo')->getData();
 
             if($photo)
@@ -176,6 +178,10 @@ class BlogController extends AbstractController
             {
                 $article->setPhoto($photoActuelle);
             }
+
+            $user = $this->getUser();
+
+            $article->setUser($user);
 
             //dd($article);
             $this->addFlash('success', "L'article a été $txt avec succès !");
@@ -213,6 +219,7 @@ class BlogController extends AbstractController
         // dd($id);
 
         // cette méthode mise a disposition retourne un objet App\Entity\Article contenant toute les données de l'utilisateur authentifié
+        
         $user = $this->getUser();
         $commentaire = new Commentaire;
 

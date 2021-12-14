@@ -1,0 +1,41 @@
+{% extends "base_admin.html.twig" %}
+
+{% block title %}
+    Blog Symfony | Modification d'un user
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="text-center my-3">Modification d'un utilisateur</h1>
+
+
+        <table class="table table-striped vertical-border">
+            <thead>
+                <tr>     
+                    {% for data in colonnes %}
+                        {% if data != 'id' and data != 'password' %}
+                            <th class="text-center">{{data|capitalize}}</th>            
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="align-middle text-center">{{ user.email }}</td>
+                    <td class="align-middle text-center">{{ user.roles.0 }}</td>
+                    <td class="align-middle text-center">{{ user.prenom }}</td>
+                    <td class="align-middle text-center">{{ user.nom }}</td>
+                    <td class="align-middle text-center">{{ user.adresse }}</td>
+                    <td class="align-middle text-center">{{ user.ville }}</td>
+                    <td class="align-middle text-center">{{ user.codePostal }}</td>
+                </tr> 
+            </tbody>
+        </table>
+
+
+        {{ form_start(userForm) }}
+            {{ form_row(userForm.roles) }}
+            <button class="btn btn-primary">Modifier</button>
+        {{ form_end(userForm)}}
+    </div>
+{% endblock %}

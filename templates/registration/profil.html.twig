@@ -41,6 +41,53 @@
             </table>
             <a href="{{ path('profil_edit', {'id': app.user.id}) }}" class="btn btn-primary">Modifier</a>
         </div>
+        {% if app.user.article|length > 0 %}
+            
 
+            <div class="accordion my-3 col-12 col-md-8 col-lg-6 mx-auto" id="accordionExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Vos articles
+                    </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            {# {{ dump(app.user) }} #}
+                            {% for article in app.user.article %}
+                                <p class="text-center my-2"><a class=" text-decoration-none" href="{{ path('blog_show', {'id' : article.id }) }}">{{ article.titre }} | publié le {{ article.date|date("d-m-Y H:i") }}</a></p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="carouselExampleCaptions" class="carousel slide carousel-dark mx-auto my-3" data-bs-ride="carousel" style="height: 600px; width: 400px;">
+                <div class="carousel-inner">
+                {% set first = 1 %}
+                {% for article in app.user.article %}
+                    <div class="carousel-item {% if first == 1 %} active {% endif %}">
+                        <img src="{{ asset('uploads/photos/' ~ article.photo) }}" class="d-block mx-auto rounded" style="height: 600px; width: 400px" alt="...">
+                        <div class="carousel-caption d-none d-md-block rounded" style="background-color: rgba(0, 0, 0, 0.5)">
+                            <h5 class="text-white">{{ article.titre }} </h5>
+                            <p class="mb-0"><a class="fw-bold text-danger text-decoration-none" href="{{ path('blog_show', {'id' : article.id }) }}">Détails de l'article</a></p>
+                        </div>
+                    </div>
+                    {% set first = 0 %}
+                {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        {% else %}
+
+            <h2 class="text-center">Vous n'avez posté aucun article</h2>
+
+        {% endif %}
     </div>
 {% endblock %}

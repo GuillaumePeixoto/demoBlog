@@ -9,6 +9,7 @@ use App\Entity\User;
 use App\Form\ArticleType;
 use App\Form\CategoryType;
 use App\Form\CommentaireType;
+use App\Form\RegistrationFormType;
 use App\Repository\ArticleRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\CommentaireRepository;
@@ -283,6 +284,36 @@ class BackOfficeController extends AbstractController
         return $this->render('back_office/admin_users.html.twig',[
             'colonnes' => $colonnes,
             'users' => $users
+        ]);
+    }
+
+    #[Route('/admin/user/{id}/modify', name: 'app_admin_mofify_user')]
+    public function adminUserForm(User $user, EntityManagerInterface $manager, Request $request): Response
+    {
+
+        $colonnes = $manager->getClassMetadata(User::class)->getFieldNames();
+
+        $userForm = $this->createForm(RegistrationFormType::class, $user, [
+            'adminUserUpdate' => true
+        ]);
+
+        $userForm->handleRequest($request);
+
+        if($userForm->isSubmitted() && $userForm->isValid())
+        {
+            $this->addFlash('success', "Modification du role de l'utilisateur n° !");
+
+            $manager->persist($user);
+
+            $manager->flush();
+
+            return $this->redirectToRoute('app_admin_users');
+        }
+
+        return $this->render('back_office/admin_user_form.html.twig',[
+            'userForm' => $userForm->createView(),
+            'colonnes' => $colonnes,
+            'user' => $user
         ]);
     }
 }

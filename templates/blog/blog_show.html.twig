@@ -25,7 +25,7 @@
                 <div class="col-{{ col }} p-4 d-flex flex-column position-static">
                 <strong class="d-inline-block mb-2 text-success">{{ article.category.titre }}</strong>
                 <h3 class="mb-0">{{ article.titre }}</h3>
-                <div class="mb-1 text-muted">{{ article.date|date("d-m-Y H:i")}}</div>
+                <div class="mb-1 text-muted">Publié le {{ article.date|date("d-m-Y H:i") }} par {{ article.user.nom }}&nbsp;{{article.user.prenom}} </div>
                 <p class="card-text mb-auto">{{ article.contenu|striptags }}</p>
                 <div class="mt-3">
                     <a href="{{ path('blog_edit', {'id': article.id}) }}" class="btn btn-dark">Modifier</a>
